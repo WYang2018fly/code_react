@@ -28,7 +28,7 @@
                 // console.log(this.props.title)
             }
 
-            //after component receive a new prop(updated)
+            //after components receive a new prop(updated)
             //this function can't be called when render function initialize
             componentWillReceiveProps(nextProps){
                 console.log('02-get the data from parent component when it updated 02',nextProps)
@@ -38,7 +38,7 @@
                 })*/
             }
 
-            //whether to update data in component
+            //whether to update data in components
             shouldComponentUpdate(nextProps, nextState){
                 // console.log(nextProps,nextState)
                 console.log('02-whether to update component 03',this.state.pTop)
@@ -48,7 +48,7 @@
                     })
                 }
                 setTimeout(()=>{
-                    //current component's data is changed,but it didn't be rendered
+                    //current components's data is changed,but it didn't be rendered
                     // console.log(this.state.pTop)
                 },2000)
                 return true
@@ -66,7 +66,7 @@
                     <div>
                         <h2>This is list component</h2>
                         {
-                            // current component maintain own data(state)
+                            // current components maintain own data(state)
                             // this.props.title
                             this.state.pTop
                         }

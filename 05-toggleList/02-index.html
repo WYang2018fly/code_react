@@ -69,11 +69,11 @@
                     onOff: this.props.show
                 }
                 //constructor function execute only once
-                //parent component app is already updated
-                //but son component is unchanged
+                //parent components app is already updated
+                //but son components is unchanged
                 //at this case,click other items,the first item is still unfolded
-                //parent component data update,son component can use lifecycle
-                //to get data from parent component
+                //parent components data update,son components can use lifecycle
+                //to get data from parent components
 
                 // console.log(this.props.show)
             }
@@ -83,7 +83,7 @@
             //two parameters:
             //    nextProps(value of next props) and nextState(value of next state)
             //return value
-            //  true: component continue to render
+            //  true: components continue to render
             //  false: stop to call render function
             shouldComponentUpdate(nextProps, nextState) {
                 // console.log(nextProps, nextState)
@@ -176,7 +176,7 @@
 
             //change state value
             handleChange = (i)=>{
-                // console.log('component of parent level',i)
+                // console.log('components of parent level',i)
                 // operate other items,traversal all arr,set opposite value
                 const arr = this.state.arr.map((item,index)=>{
                     //click operation is to unfold list,so return value 'true'

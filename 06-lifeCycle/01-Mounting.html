@@ -26,7 +26,7 @@
         class App extends React.Component{
             constructor(props){
                 //constructor only execute once
-                //this.props.title(parent component incoming data)
+                //this.props.title(parent components incoming data)
                 //this.state = {}(initialize a state)
                 console.log(props,arguments)
                 super(props);
@@ -57,11 +57,11 @@
                 //request data api here at real scene
                 //data what returned from back-end will be mounted in state
                 //Goodness:
-                //1.current component renders based on state data
+                //1.current components renders based on state data
                 //2.state data is response data,Once the data changes, the render function is triggered
                 //eg: click current elements what execute current event function,
-                //    update current component data b,data be changed automatically trigger function render
-                //current component maintain own data(state)
+                //    update current components data b,data be changed automatically trigger function render
+                //current components maintain own data(state)
                 console.log(this._btn.style.background = 'skyblue')
             }
 
