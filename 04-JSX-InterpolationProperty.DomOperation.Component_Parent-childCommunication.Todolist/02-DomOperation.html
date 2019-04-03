@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <title></title>
+    <style>
+        *{margin:0;padding:0;font-family: Microsoft YaHei,serif;}
+        li{list-style: none;}
+    </style>
+</head>
+
+<body>
+    <!-- render jsx code in app node through ReactDOM.render -->
+    <div id="app"></div>
+    <!-- jsx code be convert to code what browser can recognize -->
+    <script src="../node_modules/babel-standalone/babel.js"></script>
+    <!-- progressive UI frame -->
+    <script src="../node_modules/react/umd/react.development.js"></script>
+    <!-- it is responsible for rendering JSX into node which be pointed -->
+    <script src="../node_modules/react-dom/umd/react-dom.development.js"></script>
+
+    <script type="text/babel">
+        /*
+             Dom Operation
+        */
+
+        //es5
+        /*function  handleClick(e) {
+            // console.log(handleClick)
+            // 1.operate DOM through id
+            const ipt = document.querySelector('input')
+            ipt.style.background = 'gray'
+            //console.log( ipt )
+
+            //2.operate DOM through event object
+            const {target} = e
+            target.style.outline = 'none'
+            //console.log(target)
+
+            //
+            console.log(this)
+        }*/
+
+        /*const element = (
+            <div>
+                <h1>Title</h1>
+                <div>div</div>
+                <input
+                    type="button"
+                    defaultValue="OperationDom"
+                    onClick={handleClick}
+                />
+            </div>
+        )*/
+
+        //es6
+        class List extends React.Component{
+            render(){
+                return(
+                    <div>
+                        <h2>item</h2>
+                    </div>
+                )
+            }
+        }
+        class Element extends React.Component{
+            handleClick(e) {
+                // console.log(handleClick)
+                // operate DOM by JS
+                // 1.operate DOM through id
+                const ipt = document.querySelector('input')
+                ipt.style.background = 'gray'
+                //console.log( ipt )
+
+                //2.operate DOM through event object
+                const {target} = e
+                target.style.outline = 'none'
+                //console.log(target)
+
+                //operate DOM by React
+                //3.operate DOM through ref property
+                //console.log( this.refs.btn )
+                //ensure global uniqueness when develop a project through create-react-app
+                this.refs.btn.style.color = 'white'
+
+                //4.operate DOM through findDOMNode
+                ReactDOM.findDOMNode(ipt).style.background = 'purple'
+
+                console.log(this)
+                console.log(this._div)
+                console.log(this._list)
+            }
+
+            /*
+                *  virtual DOM
+                *  after it be only inserted into html,it become a real DOM
+                *  sometimes we need get real dom from components,use ref property
+                *  new react version,don't advice use ref string or use ref callback
+                *  in this way,dom be mounted to instance object(ref callback -> this.property)
+                *  we should use dom fixed reference(固定的引用) rather than 'findDOMNode'
+                *  because when render return null,'findDOMNode' also return null
+                *  when use ReactDOM.findDOMNode
+                *     parameter is dom,return value is dom
+                *     parameter is components,return value is components render's dom
+            */
+
+            render() {
+                return (
+                    <div>
+                        <h1>Title</h1>
+                        <div
+                            ref={itemDiv=>this._div=itemDiv}
+                        >div</div>
+                        <br />
+                        <List ref={listComponent=>this._list=listComponent}></List>
+                        <br />
+                        <input
+                            ref={'btn'}
+                            type="button"
+                            defaultValue="OperationDom"
+                            onClick={
+                                () => {
+                                    this.handleClick.bind(this)
+                                    //pass value : components   false
+                                    console.log(ReactDOM.findDOMNode(this._list) == this._list)
+                                    //pass value : dom element  true
+                                    console.log(ReactDOM.findDOMNode(this._div) == this._div)
+                                }
+                            }
+                        />
+
+                    </div>
+                )
+            }
+        }
+
+        ReactDOM.render(
+            <Element></Element>,
+            document.querySelector('#app')
+        )
+    </script>
+</body>
+
+</html>

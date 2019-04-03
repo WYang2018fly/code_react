@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">     
+    <title></title>  
+    <style>
+        *{margin:0;padding:0;font-family: Microsoft YaHei,serif;}
+	    li{list-style: none;}
+    </style>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script src="../node_modules/babel-standalone/babel.js"></script>
+    <script src="../node_modules/react/umd/react.development.js"></script>
+    <script src="../node_modules/react-dom/umd/react-dom.development.js"></script>
+    <script type="text/babel">
+        class List extends React.Component{
+            constructor() {
+                //only execute once
+                super(...arguments);
+                this.state = {
+                    list: 'This list data',
+                    pTop: this.props.title
+                }
+                console.log('02-constructor 01')
+                // console.log(this.props.title)
+            }
+
+            //after component receive a new prop(updated)
+            //this function can't be called when render function initialize
+            componentWillReceiveProps(nextProps){
+                console.log('02-get the data from parent component when it updated 02',nextProps)
+
+                /*this.setState({
+                    pTop: nextProps.title
+                })*/
+            }
+
+            //whether to update data in component
+            shouldComponentUpdate(nextProps, nextState){
+                // console.log(nextProps,nextState)
+                console.log('02-whether to update component 03',this.state.pTop)
+                if(this.state.pTop !== nextProps.title){
+                    this.setState({
+                        pTop: nextProps.title
+                    })
+                }
+                setTimeout(()=>{
+                    //current component's data is changed,but it didn't be rendered
+                    // console.log(this.state.pTop)
+                },2000)
+                return true
+            }
+
+            componentWillUpdate(nexProps, nextState){
+                console.log('02-component will be updated 04',nexProps,nextState)
+                //update after execute render function
+                //depend on the own needs
+            }
+
+            render(){
+                console.log('02-render component 05')
+                return (
+                    <div>
+                        <h2>This is list component</h2>
+                        {
+                            // current component maintain own data(state)
+                            // this.props.title
+                            this.state.pTop
+                        }
+                    </div>
+                );
+            }
+
+            componentDidUpdate(prevProps, prevState) {
+                console.log('02-component finish to update 06',prevProps,prevState)
+                //prevProps,prevState
+                //first update
+                //{title:"App"} {list:"This list data",pTop:"App"}
+                //{title:"click event change app data"}{list:"this list data",pTop:"click event change app data"}
+            }
+
+            componentWillUnmount(){
+                //It is equivalent to principle of executing some operation when close the web page.
+                console.log('03-List component will be destroy 07')
+                window.localStorage.setItem('componentWillUnmount','List had been destroyed!')
+            }
+        }
+
+        class App extends React.Component{
+            constructor(props){
+                super(props);
+                this.state = {
+                    p: 'App',
+                    onOff: true
+                }
+                console.log('01-constructor1')
+            }
+
+            componentWillMount(){
+                console.log('01-Component will be mounted2')
+            }
+
+            componentDidMount(){
+                console.log('01-Component are mounted completely4')
+            }
+
+            handleClick = ()=>{
+                this.setState({
+                    p: 'click event change app data'
+                })
+            }
+
+            destroy = ()=>{
+                let onOff = !this.state.onOff
+                this.setState({
+                    onOff  //key name and value parameter name is same,
+                           //we can only write a key name
+                })
+            }
+
+            render(){
+                console.log('01-start to render elements3')
+                return (
+                    <div>
+                        <h1>App</h1>
+                        {
+                        this.state.onOff ? <List title={this.state.p}></List>:''
+                        }
+                        {
+                            this.state.onOff && <List title={this.state.p}></List>
+                        }
+                        <br />
+                        <button onClick={this.handleClick}>click</button>
+                        <br />
+                        <input type="button" defaultValue="destroyList" onClick={this.destroy} />
+                    </div>
+                )
+            }
+
+
+        }
+
+        ReactDOM.render(
+            <App></App>,
+            document.querySelector('#app')
+        )
+    </script>
+</body>
+
+</html>

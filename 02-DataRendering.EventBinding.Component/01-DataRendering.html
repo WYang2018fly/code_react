@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">     
+    <title>DataRendering</title>
+    <style>
+        *{margin:0;padding:0;font-family: Microsoft YaHei,serif;}
+	    li{list-style: none;}
+        .note,.info{
+            font-size: 8px;
+            color: #ddd;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+
+    </div>
+
+    <script src="../node_modules/babel-standalone/babel.js"></script>
+    <script src="../node_modules/react/umd/react.development.js"></script>
+    <script src="../node_modules/react-dom/umd/react-dom.development.js"></script>
+    <script type="text/babel">
+        //1.request data
+        const person = {
+            name: 'mike',
+            age: 20,
+            sex: 1
+        }
+        const arr = ['Mr.zhang','Miss.Li','Mrs.yang','LiMing']
+
+        const styles = {
+            title:{
+                background: 'black',
+                color: 'white'
+            },
+            content:{
+                fontSize: '30px'
+            }
+        }
+        function getSex() {
+            if(person.sex) return <span>man</span>;
+            return <span>woman</span>
+        }
+        //2.insert data to element nodes
+        //see as element components
+        const element = (
+            <div>
+                {
+                    //About element tags style
+                    // (1)we can use json object in interpolation symbols
+                    // (2)in-line style use Camel-Case
+                }
+                <h1 style={styles.content}>render data</h1>
+                <h2 style={{color:'#eee'}}>name:{person.name}</h2>
+                <h2>age:{person.age}</h2>
+                <h2 style={styles.title}>
+                    sex:
+                    {
+                        //jsx code grammar
+                        //(1)Using ternary expression to realize judgement
+                        //Reason: can't write 'if' judgement
+                        person.sex ? 'man' : 'woman'
+                    }
+                </h2>
+                <ul>
+                    {
+                        //(2)use {}(interpolation symbol) to render data in page
+                        //data binding
+                        arr.length >0 && arr.map((item,index)=>{
+                            return (
+                                <li
+                                    key={index}
+                                    className="info"
+                                    datasrc=""
+                                    title="userInfo">
+                                    {index+1}.{item}
+                                </li>
+                            )
+                        })
+                    }
+
+                </ul>
+                <em className="note">
+                    {
+                        //(3)how to use function?
+                        //immediate function
+                        (function () {
+                            // return 'This is immediate function,function executes automatically'
+                            if(person.sex) return <h2>man</h2>;
+                            return <h2>woman</h2>
+                        })()
+                    }
+
+                </em>
+                <p>
+                    {
+                        //Array can be inserted directly
+                        //JSON Object can't be rendered
+                        arr
+                    }
+                </p>
+                <h3>
+                    {
+                        //Be converted to a JSON string
+                        // JSON.stringify(person)
+                        Object.keys(person)
+                    }
+                </h3>
+                <h4>{getSex()}</h4>
+            </div>
+
+        )
+
+        //3.render data in page
+        ReactDOM.render(
+            element,
+            document.querySelector('#app')
+        )
+
+
+
+
+    </script>
+
+</body>
+
+</html>

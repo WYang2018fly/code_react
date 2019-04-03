@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">     
+    <title></title>  
+    <style>
+        *{margin:0;padding:0;font-family: Microsoft YaHei,serif;}
+	    li{list-style: none;}
+    </style>
+</head>
+
+<body>
+    <div id="app"></div>
+
+    <script src="../node_modules/babel-standalone/babel.js"></script>
+    <script src="../node_modules/react/umd/react.development.js"></script>
+    <script src="../node_modules/react-dom/umd/react-dom.development.js"></script>
+    <script type="text/babel">
+        //stateful components
+        //definite head components to extend React.Component
+        //then you can call components in React.Component
+        class Head extends React.Component{
+            constructor(){
+                super()  //call parent class's constructor
+                this.name = 'mike'
+                this.age
+            }
+
+            //can not write function
+            say(){
+                console.log('function say')
+            }
+
+            //render
+            render(){
+                return (
+                    <header>This is stateful component Head</header>
+                )
+            }
+
+        }
+
+        let element = (
+            <div>
+                <hr />
+                <Head></Head>
+                <hr />
+            </div>
+        )
+
+        ReactDOM.render(
+            element,
+            document.querySelector('#app')
+        )
+    </script>
+</body>
+
+</html>

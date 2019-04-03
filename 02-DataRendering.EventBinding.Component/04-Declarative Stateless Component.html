@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">     
+    <title></title>  
+    <style>
+        *{margin:0;padding:0;font-family: Microsoft YaHei,serif;}
+	    li{list-style: none;}
+    </style>
+</head>
+
+<body>
+    <div id="app"></div>
+
+    <script src="../node_modules/babel-standalone/babel.js"></script>
+    <script src="../node_modules/react/umd/react.development.js"></script>
+    <script src="../node_modules/react-dom/umd/react-dom.development.js"></script>
+
+    <script type="text/babel">
+        //Split into independent cell blocks
+        //Code reuse
+        //This is note components,it is only variable,there is no state
+        const hd = (
+            <header>This is header</header>
+        )
+        const main = (
+            <main>This is main content</main>
+        )
+        const ft = (
+            <footer>This is page footer</footer>
+        )
+
+        //declare a function components
+        //it is stateless components
+        function Head(props){
+           // console.log(props)
+            return (
+                <header>This is header,{props.title}</header>
+            )
+        }
+
+        function Main(){
+            return (
+                <main>This is main content</main>
+            )
+        }
+
+        function Footer(){
+            return (
+                <footer>This is page footer</footer>
+            )
+        }
+
+        //jsx
+        /*
+        *  components
+        *    1.state
+        *       it is responsible for data in page view
+        *       in other words,page render view(UserInterface) according to state
+        *    2.props
+        *       properties
+        *
+        *
+        * */
+        let element = (
+            <div>
+                {hd}
+                {main}
+                {ft}
+                <hr />
+                {
+                    //Component can be use to transfer value
+                }
+                <Head
+                    title={'head component'}
+                    data={['index','news','userCenter']}
+                ></Head>
+                <Main></Main>
+                <Footer></Footer>
+                <hr />
+            </div>
+        )
+
+        ReactDOM.render(
+            element,
+            document.querySelector('#app')
+        )
+    </script>
+</body>
+
+</html>

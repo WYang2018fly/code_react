@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <title></title>
+    <style>
+        *{margin:0;padding:0;font-family: Microsoft YaHei,serif;}
+        li{list-style: none;}
+        h2{
+            background: #ccc;
+        }
+        ol{
+
+        }
+        li{
+            border-bottom: 2px solid #ccc;
+        }
+        .list{
+            height: 0;
+            overflow: hidden;
+            transition: 0.5s;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script src="../node_modules/babel-standalone/babel.js"></script>
+    <script src="../node_modules/react/umd/react.development.js"></script>
+    <script src="../node_modules/react-dom/umd/react-dom.development.js"></script>
+    <script type="module">
+        import {dataList} from "./data2.js"
+        //console.log(dataList)
+        //data can't be use in other js action scope which is import in module
+        //it should be mounted at 'window' action scope
+        window.dataList = dataList
+    </script>
+
+    <script type="text/babel">
+        class List extends React.Component{
+            render() {
+                const {list} = this.props
+                return (
+                    <div>
+                        <ol>
+                            {
+                                list.map((item,index)=>{
+                                    return (
+                                        <li key={index}>
+                                            <p>{index + 1}.{item.name}</p>
+                                            <p>{item.gender}</p>
+                                            <p>{item.introduce}</p>
+                                        </li>
+                                    )
+                                })
+                            }
+                        </ol>
+                    </div>
+                );
+            }
+        }
+
+        class Content extends React.Component{
+            constructor(){
+                // console.log(arguments);
+                super(...arguments)
+                this.state = {
+                    onOff: this.props.show
+                }
+                //constructor function execute only once
+                //parent component app is already updated
+                //but son component is unchanged
+                //at this case,click other items,the first item is still unfolded
+                //parent component data update,son component can use lifecycle
+                //to get data from parent component
+
+                // console.log(this.props.show)
+            }
+
+            //react lifecycle function: shouldComponentUpdate
+            //it will be called when components receive new props or state
+            //two parameters:
+            //    nextProps(value of next props) and nextState(value of next state)
+            //return value
+            //  true: component continue to render
+            //  false: stop to call render function
+            shouldComponentUpdate(nextProps, nextState) {
+                // console.log(nextProps, nextState)
+                //change onOff
+                if(this.state.onOff !== nextProps.show){
+                    this.setState({
+                        onOff: nextProps.show
+                    })
+                }
+                //unfold or close
+                if( this.state.onOff != nextState.onOff){
+                    this.toggleList(nextState.onOff)
+                }
+
+                return true
+            }
+
+            //react lifecycle function: componentDidMount
+            //After first render,only in client
+
+            componentDidMount() { //window.onload
+                this.toggleList(this.state.onOff)
+            }
+
+            toggleList = (onOff)=>{
+                const ele = this._list
+                // console.log(ele)
+                if(onOff){
+                    ele.style.height = ele.scrollHeight + 'px'
+                }else ele.style.height = 0
+                //the style of unfold and close is decided by function toggleList
+            }
+
+            handleClick = ()=>{
+                const onOff = !this.state.onOff
+                this.setState({
+                    onOff
+                })
+                //unfold current list,close other lists
+                //it means that each item which in arr should be invested
+                //arr in element of parent level,so deal with this array
+                //to call function in element of parent level
+
+                // console.log(this.props.change)
+                this.props.change(this.props.index)
+            }
+
+            render() {
+                // console.log(this.props)
+                const {name,list,index} = this.props
+                return (
+                    <div>
+                        <h2 onClick={this.handleClick}>{index + 1}.{name}</h2>
+                        {
+                            /*this.state.onOff && (
+                                <ol>
+                                    {
+                                        list.map((item,index)=>{
+                                            return (
+                                                <li key={index}>
+                                                    <p>{index + 1}.{item.name}</p>
+                                                    <p>{item.gender}</p>
+                                                    <p>{item.introduce}</p>
+                                                </li>
+                                            )
+                                        })
+                                    }
+                                </ol>
+                            )*/
+                            <div
+                                className="list"
+                                ref={abc=>this._list=abc}
+                            >
+                                <List list={list}></List>
+                            </div>
+                        }
+                    </div>
+                );
+            }
+        }
+
+        class App extends React.Component{
+            //state of element 'ol': unfold or close
+            state = {
+                arr: [true,false,false]
+            }
+
+            //get data
+            getData = () => dataList
+
+            //change state value
+            handleChange = (i)=>{
+                // console.log('component of parent level',i)
+                // operate other items,traversal all arr,set opposite value
+                const arr = this.state.arr.map((item,index)=>{
+                    //click operation is to unfold list,so return value 'true'
+                    if(index === i) return true
+                    return false
+                })
+
+                this.setState({
+                    arr
+                })
+                // console.log(arr)
+            }
+
+            render(){
+                const data = this.getData()
+                return (
+                    <div>
+                        {
+                            Object.keys(data).map((item,index)=>{
+                                return (
+                                    <Content
+                                        key={index}
+                                        //data={data[list]}
+                                        //a={data[item].name}
+                                        //b={data[item].list}
+                                        {...data[item]}
+                                        index={index}
+                                        show={this.state.arr[index]}
+                                        change={this.handleChange}
+                                    ></Content>
+                                )
+                            })
+                        }
+                    </div>
+                );
+            }
+        }
+
+        ReactDOM.render(
+            <App></App>,
+            document.querySelector('#app')
+        )
+    </script>
+
+</body>
+
+</html>

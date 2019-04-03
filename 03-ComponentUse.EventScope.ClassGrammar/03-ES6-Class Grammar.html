@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">     
+    <title>class grammar</title>
+    <style>
+        *{margin:0;padding:0;font-family: Microsoft YaHei,serif;}
+	    li{list-style: none;}
+    </style>
+</head>
+
+<body>
+    <script>
+        //es5
+        /*function Point(x,y) {
+            this.x = x
+            this.y = y
+        }
+
+        Point.foo = 'bar'
+
+        Point.prototype.toString = function(){
+            return '(' + this.x + ', ' + this.y + ')';
+        }
+
+        let point = new Point(1,2)
+        console.log(point.toString())*/
+
+        //es6
+        //typeof Point   'function'
+        //Point === Point.prototype.constructor   'true'
+        class Point{
+            constructor(x,y){
+                this.x = x
+                this.y = y
+            }
+
+            toString(){
+                return `${this.x}+${this.y}`
+            }
+        }
+
+        var point = new Point(1,2)
+        console.log(point.toString())
+
+
+        //class's all function be defined in prototype of Class
+        //call the function in new instance object
+        //which is the same as the process what call the function of prototype
+        Object.assign(Point.prototype,{
+            toAdd(){
+                return this.x + this.y
+            }
+        })
+        console.log(point.toAdd())
+
+        //Son class extends parent class,it need to call constructor in parent class
+        //by super()
+        class Point2 extends Point{
+            constructor(x,y,z){
+                super(x,y)
+                this.z = z
+            }
+
+            getData(){
+                return `x:${this.x},y:${this.y},z:${this.z}`
+            }
+
+        }
+
+        var point2 = new Point2(1,2,3)
+        console.log(point2.getData())
+
+    </script>
+</body>
+
+</html>

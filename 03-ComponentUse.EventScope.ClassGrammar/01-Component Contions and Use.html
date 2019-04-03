@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">     
+    <title></title>  
+    <style>
+        *{margin:0;padding:0;font-family: Microsoft YaHei,serif;}
+	    li{list-style: none;}
+    </style>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script src="../node_modules/babel-standalone/babel.js"></script>
+    <script src="../node_modules/react/umd/react.development.js"></script>
+    <script src="../node_modules/react-dom/umd/react-dom.development.js"></script>
+    <script type="text/babel">
+        class Head extends React.Component{
+            constructor(){
+                super(...arguments)  //call parent class's constructor
+                this.name = 'mike'
+                this.age = '22'
+                this.state = {
+                    //this object be use to save the data which be requested from back-end
+                    //state is responsible for current components's UserInterface
+                    //if data have been changed in state,the view will automatically update data
+                    //responsive data
+                    desc: this.props.text
+                }
+                //modify this point in handleClick
+
+                this.handleClick = this.handleClick.bind(this)
+
+                //setTimeout
+                setTimeout(()=>{
+                    this.setState({
+                        desc: 'during 2s'
+                    })
+                },2000)
+            }
+
+            //can not write function
+            say(){
+                console.log('function say')
+            }
+
+            //modify this point in handleClick
+            handleClick(){
+                console.log('handleClick')
+                console.log(this)
+            }
+
+            //arrow function: this point context environment
+            handleClick3 = ()=>{
+                console.log(this.state)
+                this.setState({
+                    desc: 'reload'
+                })
+            }
+
+            //render
+            render(){
+                // console.log(this)
+                return (
+                    <div>
+                        <header onClick={this.handleClick.bind(this)}>{this.state.desc}</header>
+                        <header onClick={this.handleClick}>{this.state.desc}</header>
+                        <header onClick={this.handleClick3}>{this.state.desc}</header>
+                    </div>
+                )
+            }
+        }
+
+        let element = (
+            <div>
+                <hr />
+                <Head text='This is stateful component Head'></Head>
+                <hr />
+            </div>
+        )
+
+        ReactDOM.render(
+            element,
+            document.querySelector('#app')
+        )
+    </script>
+</body>
+
+</html>

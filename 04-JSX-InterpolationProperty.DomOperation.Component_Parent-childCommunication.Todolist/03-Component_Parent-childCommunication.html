@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">     
+    <title></title>  
+    <style>
+        *{margin:0;padding:0;font-family: Microsoft YaHei,serif;}
+	    li{list-style: none;}
+    </style>
+
+</head>
+
+<body>
+    <!-- render jsx code in app node through ReactDOM.render -->
+    <div id="app"></div>
+    <!-- jsx code be convert to code what browser can recognize -->
+    <script src="../node_modules/babel-standalone/babel.js"></script>
+    <!-- progressive UI frame -->
+    <script src="../node_modules/react/umd/react.development.js"></script>
+    <!-- it is responsible for rendering JSX into node which be pointed -->
+    <script src="../node_modules/react-dom/umd/react-dom.development.js"></script>
+
+    <script type="text/babel">
+        /*
+        *   two vital concepts in react components
+        *   1.state
+        *       it is responsible for user interface
+        *   2.props
+        *       transfer value by properties in pages
+        *
+        *   Later, the components will be separated into a file.
+        *   the file suffix(jsx js) can be see as a components
+        *   every components is responsible for a page or a part of view to show
+        * */
+
+        //son components
+        class List extends React.Component{
+            render(){
+                console.log(this.props)
+                return(
+                    <div>
+                        <h2>{this.props.propA}</h2>
+                        <h2>{this.props.propB}</h2>
+                        {
+                            //son components call parent components's function
+                            //son components communicate with parent components
+                        }
+
+                        <button onClick={this.props.fn.bind(this,'pass data1')}>fn1</button><br/>
+                        <button onClick={()=>{this.props.fn('pass data2')}}>fn2</button>
+                    </div>
+                )
+            }
+        }
+
+        //parent components
+        class Element extends React.Component{
+            state = {
+                data : "parent component's data"
+            }
+
+            getData(para){
+                console.log(para)
+            }
+
+            render(){
+                return (
+                    <div>
+                        <h1>Component</h1>
+                        <List
+                            propA={"listA"}
+                            propB={this.state.data}
+                            fn={this.getData}
+                        ></List>
+                    </div>
+                )
+
+            }
+
+        }
+
+        ReactDOM.render(
+            <Element></Element>,
+            document.querySelector('#app')
+        )
+
+    </script>
+</body>
+
+</html>

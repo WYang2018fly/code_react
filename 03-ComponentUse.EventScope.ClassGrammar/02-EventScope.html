@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <title></title>
+    <style>
+        *{margin:0;padding:0;font-family: Microsoft YaHei,serif;}
+        li{list-style: none;}
+    </style>
+</head>
+
+<body>
+<div id="app"></div>
+<script src="../node_modules/babel-standalone/babel.js"></script>
+<script src="../node_modules/react/umd/react.development.js"></script>
+<script src="../node_modules/react-dom/umd/react-dom.development.js"></script>
+<script type="text/babel">
+    class Head extends React.Component{
+        constructor(){
+            //when don't use this.props in constructor function,you don't need pass the parameter
+            super(...arguments)  //call parent class's constructor
+            this.name = 'mike'
+            this.age = '22'
+            // this.state = {
+            //     //this object be use to save the data which be requested from back-end
+            //     //state is responsible for current components's UserInterface
+            //     //if data have been changed in state,the view will automatically update data
+            //     //responsive data
+            //     desc: this.props.text
+            // }
+
+            //modify this point in handleClick or 'this' point 'undefined' inside the function
+            //after this,handleClick2 also be mounted to Head object as a property
+            this.handleClick2 = this.handleClick2.bind(this)
+
+            //setTimeout
+            setTimeout(()=>{
+                this.setState({
+                    desc: 'during 2s'
+                })
+            },2000)
+        }
+
+        //this object will be mounted to Head object
+        state = {
+            desc: this.props.text
+        }
+
+        //can not write function
+        say(){
+            console.log('function say')
+        }
+
+        //modify this point in handleClick
+        //handleClick1,2 is be loaded in Head object's _proto_
+        handleClick1(res,e){
+            console.log('handleClick1')
+            console.log(this,res,e.target)
+        }
+
+        handleClick2(){
+            console.log('handleClick2')
+            console.log(this)
+        }
+
+
+
+        //arrow function: 'this' point context environment
+        //handleClick3 is be load in Head Object
+        handleClick3 = ()=>{
+            console.log(this)
+            this.setState({
+                desc: 'reload'
+            })
+        }
+
+        handleClick4 = (res,e)=>{
+            console.log('headleClick4')
+            console.log(this)
+        }
+
+        //render elements
+        render(){
+            // console.log(this)
+            return (
+                <div>
+                    {
+                        //Pass Parameter
+                        //1.this.handleClick1.bind(this,'Header data')
+                        //first parameter is what 'this' point inside the function
+                        //second parameter is the parameter what you want to pass
+                        //last parameter is event object
+                    }
+                    <header onClick={this.handleClick1.bind(this,'Header data')}>{ this.state.desc && this.state.desc }</header>
+                    {
+                        //2.this.handleClick2(parameter)
+                        //when you use this way to pass parameter,the function will execute
+                        //so it is not suitable for parameter transmission
+
+                    }
+                    <p onClick={this.handleClick2}>{ this.state.desc && this.state.desc }</p>
+                    <header onClick={this.handleClick3}>{ this.state.desc && this.state.desc }</header>
+                    {
+                        //arrow function: 'this' point context environment
+                        // parent instantiate object
+                    }
+                    <header onClick={(e)=>{this.handleClick4('handleClick4',e)}}>{ this.state.desc && this.state.desc }</header>
+                </div>
+            )
+        }
+    }
+
+    let element = (
+        <div>
+            <hr />
+            <Head text='This is stateful component Head'></Head>
+            <hr />
+        </div>
+    )
+
+    ReactDOM.render(
+        element,
+        document.querySelector('#app')
+    )
+</script>
+</body>
+
+</html>

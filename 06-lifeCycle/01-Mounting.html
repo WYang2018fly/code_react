@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">     
+    <title></title>  
+    <style>
+        *{margin:0;padding:0;font-family: Microsoft YaHei,serif;}
+	    li{list-style: none;}
+    </style>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script src="../node_modules/babel-standalone/babel.js"></script>
+    <script src="../node_modules/react/umd/react.development.js"></script>
+    <script src="../node_modules/react-dom/umd/react-dom.development.js"></script>
+    <script type="text/babel">
+        /*
+        * Mounting initialization phase(mounting phase)
+        *   constructor()
+        *   componentWillmount()
+        *   render()
+        *   componentDidMount()
+        * */
+        class App extends React.Component{
+            constructor(props){
+                //constructor only execute once
+                //this.props.title(parent component incoming data)
+                //this.state = {}(initialize a state)
+                console.log(props,arguments)
+                super(props);
+                this.state = {
+                    a: props.title,
+                    b: this.props.title
+                }
+                console.log('01-constructor')
+            }
+
+            //before render elements
+            componentWillMount() {
+                console.log('02-component will be mounted')
+                console.log(this.refs) //we can't do dom operation
+                //request data api: it will show white screen in true exam
+                //this.setState() this.state() this.props is all asynchronous
+                this.setState({
+                    c: 'reqested data'
+                })
+                //
+                setTimeout(()=>{
+                    console.log(this.state.c)
+                },2000)
+            }
+
+            componentDidMount(){
+                console.log('04-after component is updated')
+                //request data api here at real scene
+                //data what returned from back-end will be mounted in state
+                //Goodness:
+                //1.current component renders based on state data
+                //2.state data is response data,Once the data changes, the render function is triggered
+                //eg: click current elements what execute current event function,
+                //    update current component data b,data be changed automatically trigger function render
+                //current component maintain own data(state)
+                console.log(this._btn.style.background = 'skyblue')
+            }
+
+            handleClick = ()=>{
+                this.setState({
+                    b: 'click event to change data'
+                })
+            }
+
+            render(){
+                console.log('03-start to render component')
+                //processing state data
+                // console.log(this.state.c)
+                return (
+                    <div>
+                        <h1 ref={'h1'}>App</h1>
+                        {this.state.a}
+                        <hr />
+                        code
+                        {this.state.b}
+                        <button
+                            // ref="_btn"
+                            // this ref be mounted on refs
+                            ref={a=>this._btn=a}
+                            // this ref be mounted on this
+                            onClick={this.handleClick}
+                        >click</button>
+                    </div>
+                )
+            }
+        }
+
+        ReactDOM.render(
+            <App title={'a1'}></App>,
+            document.querySelector('#app')
+        )
+    </script>
+</body>
+
+</html>

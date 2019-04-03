@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        *{margin:0;padding:0;font-family: Microsoft YaHei,serif;}
+	    li{list-style: none;}
+    </style>
+</head>
+
+<body>
+
+    <script src="./node_modules/babel-standalone/babel.js"></script>
+    <script>
+        //babel es6解析转换器
+        const es6 = `
+            let {name,version} ={
+                name: 'react',
+                version: '16.7.0'
+            }
+        `
+        const es5 = Babel.transform(es6,{presets:['es2015']}).code
+        console.log(es5)
+        //通过手动方式 进行转换框架的代码（JSX） 效率太低
+        //自动进行解析
+    </script>
+    <script type="text/babel">
+        //设置type = babel 就会自动解析编译
+        //通过html引入babel reactjs 在浏览器运行 目的是方便
+        //实际开发过程 通过脚手架工具 构建项目
+        let play = ()=>{
+            console.log('hello world')
+        }
+        play()
+
+        //开发环境
+            //本地环境下完成项目编写
+            //第三方js库
+            //开发工具 浏览器 node npm
+        //生成环境
+            //把打包好的项目部署到服务器
+    </script>
+</body>
+
+</html>

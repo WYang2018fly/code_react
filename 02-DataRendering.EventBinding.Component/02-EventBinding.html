@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <title>EventBinding</title>
+    <style>
+        *{margin:0;padding:0;font-family: Microsoft YaHei,serif;}
+	    li{list-style: none;}
+    </style>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script src="../node_modules/babel-standalone/babel.js"></script>
+    <script src="../node_modules/react/umd/react.development.js"></script>
+    <script src="../node_modules/react-dom/umd/react-dom.development.js"></script>
+    <script type="text/babel">
+
+        //element components
+        //in essence, it is a defined constant
+        //it is not a  components,the usage of bind can't show
+        const element = (
+            <div>
+                <h1>EventBinding</h1>
+                {
+                    //write more element properties,use wrap
+                }
+                <input
+                    type="button"
+                    value="button1"
+                    //1
+                    onClick={console.log('automatic execution')}
+                />
+                <br />
+                <input
+                    type="button"
+                    value="button2"
+                    //2
+                    onClick={() =>{console.log('Arrow Function')}}
+                />
+                <br />
+                {
+                    //function.call() immediately execute
+                    //function.bind() can't
+                }
+                <input
+                    type="button"
+                    value="button3"
+                    //3
+                    onClick={handleClick.bind(this,'this is a actual parameter')}
+                />
+                <br />
+                <input type="text" defaultValue="keydown" onKeyDown={handleKeyDown} />
+            </div>
+        )
+
+        //last parameter is event object
+        function handleClick(data,e) {
+            console.log('handleClick',data,e);
+        }
+
+        function handleKeyDown() {
+            console.log('handleKeyDown')
+        }
+
+        ReactDOM.render(
+            element,
+            document.querySelector('#app')
+        )
+    </script>
+</body>
+
+</html>

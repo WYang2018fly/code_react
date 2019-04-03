@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">     
+    <title></title>  
+    <style>
+        *{margin:0;padding:0;font-family: Microsoft YaHei,serif;}
+	    li{list-style: none;}
+    </style>
+</head>
+
+<body>
+    <!-- render jsx code in app node through ReactDOM.render -->
+    <div id="app"></div>
+    <!-- jsx code be convert to code what browser can recognize -->
+    <script src="../node_modules/babel-standalone/babel.js"></script>
+    <!-- progressive UI frame -->
+    <script src="../node_modules/react/umd/react.development.js"></script>
+    <!-- it is responsible for rendering JSX into node which be pointed -->
+    <script src="../node_modules/react-dom/umd/react-dom.development.js"></script>
+
+    <script type="text/babel">
+        /*
+        *   html or xml can write in js
+        *   jsx allow that insert js parameter into template
+        *   {} -> number/boolean/string/array/expression/function(){}()
+        *
+        *   Notice:
+        *       1.single label to be closed
+        *       2.some keywords can't use
+        *           class -> className  string
+        *           style -> style={object}
+        *           value -> defaultValue
+        *           for -> htmlFor
+        *           focus -> autoFocus
+        *
+        * */
+        const styles = {
+            container:{
+                color: 'gray'
+            },
+            subTitle:{
+                background: "#eee"
+            }
+        }
+
+        const element = (
+            <div>
+                <h1>hello world</h1>
+
+                <input type="text" autoFocus /><br />
+                <input id={'txt'} type="text" />
+                <label htmlFor="txt"></label>
+
+                {
+                    [
+                        <h2 className={(()=>{return 'blue'})()} key={'1232'}>h2</h2>,
+                        <h3 style= {styles.container} key={'2343'}>h3</h3>,
+                        <h4 className="title" key={'3454'}>h4</h4>
+                    ]
+                }
+            </div>
+        )
+
+        ReactDOM.render(
+            element,
+            document.querySelector('#app')
+        )
+    </script>
+</body>
+
+</html>
