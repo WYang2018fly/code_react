@@ -1,0 +1,17 @@
+*{margin:0;padding:0;font-family: Microsoft YaHei,serif;}
+li{list-style: none;}
+
+h2{
+    background: #ccc;
+}
+ol{
+
+}
+li{
+    border-bottom: 2px solid #ccc;
+}
+.list{
+    height: 0;
+    overflow: hidden;
+    transition: 0.5s;
+}
